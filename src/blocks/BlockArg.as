@@ -57,7 +57,8 @@ public class BlockArg extends Sprite {
 	public var numberType:uint = NT_NOT_NUMBER;
 	public var isEditable:Boolean;
 	public var field:TextField;
-	public var menuName:String;
+	public var menuName:String = 'costume';
+	public var realMenuName:String;
 
 	private var menuIcon:Shape;
 
@@ -70,6 +71,7 @@ public class BlockArg extends Sprite {
 	//	s - string (rectangular)
 	//	none of the above - custom subclass of BlockArg
 	public function BlockArg(type:String, color:int, editable:Boolean = false, menuName:String = '') {
+
 		this.type = type;
 
 		if (color == -1) { // copy for clone; omit graphics
@@ -79,19 +81,21 @@ public class BlockArg extends Sprite {
 		var c:int = Color.scaleBrightness(color, 0.92);
 		if (type == 'b') {
 			base = new BlockShape(BlockShape.BooleanShape, c);
+		
 			argValue = false;
+			
 		} else if (type == 'c') {
 			base = new BlockShape(BlockShape.RectShape, c);
-			this.menuName = 'colorPicker';
+			this.realMenuName = 'colorPicker';
 			addEventListener(MouseEvent.MOUSE_DOWN, invokeMenu);
 		} else if (type == 'd') {
 			base = new BlockShape(BlockShape.NumberShape, c);
 			numberType = NT_FLOAT;
-			this.menuName = menuName;
+			this.realMenuName = menuName;
 			addEventListener(MouseEvent.MOUSE_DOWN, invokeMenu);
 		} else if (type == 'm') {
 			base = new BlockShape(BlockShape.RectShape, c);
-			this.menuName = menuName;
+			this.realMenuName = menuName;
 			addEventListener(MouseEvent.MOUSE_DOWN, invokeMenu);
 		} else if (type == 'n') {
 			base = new BlockShape(BlockShape.NumberShape, c);
@@ -112,9 +116,9 @@ public class BlockArg extends Sprite {
 		} else {
 			base.setWidthAndTopHeight(30, Block.argTextFormat.size + 6); // 15 for normal arg font
 		}
+
 		base.filters = blockArgFilters();
 		addChild(base);
-
 		if ((type == 'd') || (type == 'm')) { // add a menu icon
 			menuIcon = new Shape();
 			var g:Graphics = menuIcon.graphics;
@@ -125,8 +129,18 @@ public class BlockArg extends Sprite {
 			g.endFill();
 			menuIcon.y = 5;
 			addChild(menuIcon);
+			isEditable = true; // allow typing in all fields
 		}
+		if (type == 'b') {
 
+			field = makeTextField();
+			base.setWidthAndTopHeight(30, Block.argTextFormat.size + 5); // 14 for normal arg font
+			field.text = '';
+			isEditable = true;
+			field.addEventListener(FocusEvent.FOCUS_OUT, stopEditing);
+			addChild(field);
+
+		}
 		if (editable || numberType || (type == 'm')) { // add a string field
 			field = makeTextField();
 			if ((type == 'm') && !editable) field.textColor = 0xFFFFFF;
@@ -240,7 +254,7 @@ public class BlockArg extends Sprite {
 	private function invokeMenu(evt:MouseEvent):void {
 		if ((menuIcon != null) && (evt.localX <= menuIcon.x)) return;
 		if (Block.MenuHandlerFunction != null) {
-			Block.MenuHandlerFunction(evt, parent, this, menuName);
+			Block.MenuHandlerFunction(evt, parent, this, realMenuName);
 			evt.stopImmediatePropagation();
 		}
 	}

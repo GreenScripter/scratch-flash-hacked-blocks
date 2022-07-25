@@ -731,7 +731,7 @@ public class Block extends Sprite {
 
 	public function replaceArgWithBlock(oldArg:DisplayObject, b:Block, pane:DisplayObjectContainer):void {
 		var i:int = labelsAndArgs.indexOf(oldArg);
-		if (i < 0) return;
+		//if (i < 0) return;
 
 		// remove the old argument
 		removeChild(oldArg);

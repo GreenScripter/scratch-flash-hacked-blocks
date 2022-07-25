@@ -72,7 +72,9 @@ public class Specs {
 		[10, "More Blocks",	procedureColor],
 		[11, "Parameter",	parameterColor],
 		[12, "List",		listColor],
+		[13,  "Extras",		0x007f00],
 		[20, "Extension",	extensionsColor],
+
 	];
 
 	public static function blockColor(categoryID:int):int {
@@ -244,7 +246,7 @@ public class Specs {
 		["-"],
 		["when I start as a clone",				"h", 6, "whenCloned"],
 		["create clone of %m.spriteOnly",		" ", 6, "createCloneOf"],
-		["delete this clone",					"f", 6, "deleteClone"],
+		["delete this clone",					" ", 6, "deleteClone"],
 		["-"],
 
 		// control - stage
@@ -363,7 +365,7 @@ public class Specs {
 		// obsolete blocks from Scratch 1.4 that may be used in older projects
 		["play drum %n for %n beats",			" ", 98, "drum:duration:elapsed:from:", 1, 0.25], // Scratch 1.4 MIDI drum
 		["set instrument to %n",				" ", 98, "midiInstrument:", 1],
-		["loud?",								"b", 98, "isLoud"],
+		["loud?",								"b", 13, "isLoud"],
 
 		// obsolete blocks from Scratch 1.4 that are converted to new forms (so should never appear):
 		["abs %n",								"r", 98, "abs"],
@@ -379,9 +381,11 @@ public class Specs {
 		["counter",								"r", 99, "COUNT"],
 		["clear counter",						" ", 99, "CLR_COUNT"],
 		["incr counter",						" ", 99, "INCR_COUNT"],
-		["for each %m.varName in %s",			"c", 99, "doForLoop", "v", 10],
-		["while %b",							"c", 99, "doWhile"],
-		["all at once",							"c", 99, "warpSpeed"],
+		// special
+		["for each %m.var in %s",			"c", 13, "doForLoop", "v", 10],
+		["while %b",							"c", 13, "doWhile"],
+		["all at once",							"c", 13, "warpSpeed"],
+		// stage special
 
 		// stage motion (scrolling)
 		["scroll right %n",						" ", 99, "scrollRight",		10],
